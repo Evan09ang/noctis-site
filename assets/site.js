@@ -1,76 +1,187 @@
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const hero = document.querySelector('.hero-video');
 const motion = document.querySelector('.motion');
-const preference = matchMedia('(prefers-reduced-motion: reduce)');
-let userPaused = false;
-
-async function updateBackground() {
-  if (preference.matches || userPaused || document.hidden) {
-    hero.pause();
-    motion.textContent = '播放背景';
-    return;
-  }
-  try {
-    await hero.play();
-    motion.textContent = '暂停背景';
-  } catch {
-    motion.textContent = '播放背景';
-  }
-}
 
 if (hero && motion) {
-  motion.hidden = preference.matches;
+  let visible = true;
+  let userPaused = false;
+
+  async function updateBackground() {
+    motion.hidden = reducedMotion.matches;
+    if (reducedMotion.matches || userPaused || document.hidden || !visible) {
+      hero.pause();
+      motion.textContent = '播放背景';
+      return;
+    }
+    if (!hero.hasAttribute('src')) hero.src = hero.dataset.src;
+    try {
+      await hero.play();
+      if (userPaused || reducedMotion.matches || document.hidden || !visible) {
+        hero.pause();
+        return;
+      }
+      hero.classList.add('is-ready');
+      motion.textContent = '暂停背景';
+    } catch {
+      motion.textContent = '播放背景';
+    }
+  }
+
   motion.addEventListener('click', () => {
     userPaused = !hero.paused;
     updateBackground();
   });
-  preference.addEventListener('change', () => {
-    motion.hidden = preference.matches;
-    updateBackground();
-  });
+  reducedMotion.addEventListener('change', updateBackground);
   document.addEventListener('visibilitychange', updateBackground);
-  updateBackground();
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      updateBackground();
+    });
+    observer.observe(hero);
+  } else {
+    updateBackground();
+  }
 }
 
-const tabs = [...document.querySelectorAll('[data-scene]')];
-const sample = document.querySelector('#sample');
+const buttons = [...document.querySelectorAll('[data-scene]')];
 const preview = document.querySelector('#preview');
-if (sample && preview && tabs.length) {
-  let current = tabs[0].dataset.scene;
-  const photo = document.querySelector('#scene-photo');
+
+if (preview && buttons.length) {
+  const tracks = [document.querySelector('#sample'), document.querySelector('#sample-next')];
+  const photos = [...document.querySelectorAll('[data-photo]')];
+  const volume = document.querySelector('#preview-volume');
   const name = document.querySelector('#scene-name');
+  const description = document.querySelector('#scene-description');
   const status = document.querySelector('#audio-status');
-  const descriptions = { forest: '薄雾中的河岸', stream: '林间落下的水流', ocean: '迎岸涌动的海浪' };
-  sample.volume = 0.42;
+  const scenes = {
+    forest: { name: '林风', description: '林间的风穿过树梢。' },
+    stream: { name: '溪流', description: '水声从山石间落下。' },
+    ocean: { name: '海浪', description: '潮水一层层涌上岸。' },
+  };
+
+  let selection = 'forest';
+  let active = tracks[0];
+  let requested = false;
+  let revision = 0;
+  let animation = 0;
+  let fading = false;
+  const level = () => Number(volume.value) / 100;
+
   function updateButton() {
-    preview.textContent = sample.paused ? '▷ 试听' : 'Ⅱ 暂停';
-    preview.setAttribute('aria-pressed', String(!sample.paused));
+    preview.setAttribute('aria-pressed', String(requested));
+    preview.setAttribute('aria-label', (requested ? '暂停' : '试听') + scenes[selection].name);
   }
-  async function play() {
+
+  function stop() {
+    revision++;
+    cancelAnimationFrame(animation);
+    fading = false;
+    requested = false;
+    tracks.forEach((track) => track.pause());
+    updateButton();
+  }
+
+  async function playSelection() {
+    const id = ++revision;
+    const previous = active.paused ? null : active;
+    const next = tracks.find((track) => track !== previous);
+    cancelAnimationFrame(animation);
+    fading = false;
+    tracks.forEach((track) => {
+      if (track !== previous) track.pause();
+    });
+    if (previous) previous.volume = level();
     status.textContent = '';
+    next.src = 'assets/' + selection + '.ogg';
+    next.volume = previous ? 0 : level();
     try {
-      await sample.play();
-    } catch (error) {
-      if (error.name !== 'AbortError') status.textContent = '声音暂时无法播放，请重试。';
+      await next.play();
+    } catch {
+      if (id !== revision) return;
+      stop();
+      status.textContent = '声音暂时无法播放，请重试。';
+      return;
     }
+    if (id !== revision) return;
+    active = next;
+    if (!previous) return;
+
+    fading = true;
+    const start = performance.now();
+    function crossfade(now) {
+      const progress = Math.min((now - start) / 420, 1);
+      previous.volume = level() * (1 - progress);
+      next.volume = level() * progress;
+      if (progress < 1) {
+        animation = requestAnimationFrame(crossfade);
+      } else {
+        previous.pause();
+        fading = false;
+      }
+    }
+    animation = requestAnimationFrame(crossfade);
   }
+
   preview.addEventListener('click', () => {
-    if (!sample.paused) return sample.pause();
-    if (!sample.getAttribute('src')) sample.src = 'assets/' + current + '.ogg';
-    play();
+    if (requested) {
+      stop();
+    } else {
+      requested = true;
+      updateButton();
+      playSelection();
+    }
   });
-  tabs.forEach((tab) => tab.addEventListener('click', () => {
-    if (current === tab.dataset.scene) return;
-    const wasPlaying = !sample.paused;
-    current = tab.dataset.scene;
-    tabs.forEach((item) => item.setAttribute('aria-pressed', String(item === tab)));
-    photo.src = 'assets/' + current + '.jpg';
-    photo.alt = descriptions[current];
-    name.textContent = tab.textContent;
+
+  buttons.forEach((button) => button.addEventListener('click', () => {
+    if (selection === button.dataset.scene) return;
+    selection = button.dataset.scene;
+    buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+    photos.forEach((photo) => photo.classList.toggle('is-current', photo.dataset.photo === selection));
+    name.textContent = scenes[selection].name;
+    description.textContent = scenes[selection].description;
     status.textContent = '';
-    sample.src = 'assets/' + current + '.ogg';
-    if (wasPlaying) play();
+    updateButton();
+    if (requested) playSelection();
   }));
-  sample.addEventListener('play', updateButton);
-  sample.addEventListener('pause', updateButton);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) sample.pause(); });
+
+  volume.addEventListener('input', () => {
+    if (!fading) active.volume = level();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop();
+  });
 }
+
+const featureTabs = [...document.querySelectorAll('[role="tab"]')];
+const screens = [...document.querySelectorAll('[data-screen]')];
+
+function selectFeature(tab) {
+  const feature = tab.id.replace('tab-', '');
+  featureTabs.forEach((item) => {
+    const selected = item === tab;
+    item.setAttribute('aria-selected', String(selected));
+    item.tabIndex = selected ? 0 : -1;
+    document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
+  });
+  screens.forEach((screen) => {
+    const selected = screen.dataset.screen === feature;
+    screen.classList.toggle('is-current', selected);
+    screen.setAttribute('aria-hidden', String(!selected));
+  });
+}
+
+featureTabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => selectFeature(tab));
+  tab.addEventListener('keydown', (event) => {
+    let target;
+    if (event.key === 'ArrowRight') target = (index + 1) % featureTabs.length;
+    if (event.key === 'ArrowLeft') target = (index + featureTabs.length - 1) % featureTabs.length;
+    if (event.key === 'Home') target = 0;
+    if (event.key === 'End') target = featureTabs.length - 1;
+    if (target === undefined) return;
+    event.preventDefault();
+    featureTabs[target].focus();
+    selectFeature(featureTabs[target]);
+  });
+});
