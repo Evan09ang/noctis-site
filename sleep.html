@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="用 NOCTIS 的呼吸引导、就寝时间倒推和睡前清单安排睡前时间。">
+  <meta name="theme-color" content="#0c100e">
+  <title>睡眠工具 · NOCTIS</title>
+  <link rel="icon" href="assets/mark.svg">
+  <link rel="stylesheet" href="assets/site.css?v=3">
+  <script src="assets/site.js?v=3" defer></script>
+  <script src="assets/sleep.js?v=3" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到内容</a>
+  <header class="top">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="./"><img src="assets/mark.svg" alt="" width="25" height="25">NOCTIS</a>
+      <div class="nav-links"><a href="index.html#scenes">试听</a><a href="index.html#features">功能</a><a href="sleep.html" aria-current="page">睡眠工具</a><a href="support.html">支持</a></div>
+      <a class="nav-cta" href="support.html#android">获取试用版 <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main class="sleep-main" id="main">
+    <div class="wrap">
+      <div class="sleep-intro">
+        <p class="eyebrow">睡眠工具</p>
+        <h1>睡前，慢一点。</h1>
+        <p>做一分钟呼吸练习，算好就寝时间，把睡前准备一件件收好。</p>
+      </div>
+      <section class="sleep-card breathing" aria-labelledby="breathing-title">
+        <div>
+          <h2 id="breathing-title">一分钟呼吸</h2>
+          <p>跟着光球轻轻吸气 4 秒、呼气 6 秒。按自己舒服的节奏来。</p>
+          <div class="tool-actions">
+            <button class="tool-button tool-primary" id="breath-toggle" type="button">开始呼吸</button>
+            <button class="tool-button" id="breath-reset" type="button" disabled>重置</button>
+            <span class="breath-clock" id="breath-clock" role="timer" aria-label="呼吸练习剩余时间">1:00</span>
+          </div>
+        </div>
+        <div class="breath-stage" id="breath-stage" data-state="idle">
+          <div class="breath-orb" aria-hidden="true"></div>
+          <span class="breath-phase" id="breath-phase" role="status">准备好后开始</span>
+        </div>
+      </section>
+      <div class="sleep-grid">
+        <section class="sleep-card" aria-labelledby="schedule-title" data-reveal>
+          <h2 id="schedule-title">就寝时间倒推</h2>
+          <p>按你的起床时间、目标睡眠时长和入睡预留时间，算出几点上床。</p>
+          <form class="sleep-form" id="sleep-form">
+            <label for="wake-time">起床时间<input id="wake-time" type="time" value="07:00" required></label>
+            <label for="sleep-hours">目标睡眠（小时）<input id="sleep-hours" type="number" min="1" max="16" step="0.25" value="8" required></label>
+            <label for="sleep-latency">入睡预留（分钟）<input id="sleep-latency" type="number" min="0" max="120" step="1" value="15" required></label>
+            <button class="tool-button tool-primary" type="submit">计算上床时间</button>
+          </form>
+          <output class="sleep-result" id="sleep-result" for="wake-time sleep-hours sleep-latency" role="status"></output>
+        </section>
+        <section class="sleep-card" aria-labelledby="checklist-title" data-reveal>
+          <h2 id="checklist-title">睡前清单</h2>
+          <p>勾选今晚做过的事。清单每天中午重置。</p>
+          <div class="checklist" id="checklist">
+            <label><input id="check-alarm" type="checkbox">设好明早的闹钟</label>
+            <label><input id="check-light" type="checkbox">把灯光调暗</label>
+            <label><input id="check-screen" type="checkbox">把手机放到一边</label>
+            <label><input id="check-tomorrow" type="checkbox">记下明天的第一件事</label>
+          </div>
+          <div class="check-progress" id="check-progress" role="progressbar" aria-label="睡前清单完成进度" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0"><span></span></div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="footer"><div class="wrap"><a class="brand" href="./">NOCTIS</a><nav aria-label="页脚导航"><a href="privacy.html">隐私政策</a><a href="support.html">用户支持</a><a href="terms.html">订阅服务条款</a><a href="credits.html">素材许可</a></nav></div></footer>
+</body>
+</html>

@@ -8,22 +8,24 @@
   <title>NOCTIS · 自然声音与离线声境</title>
   <link rel="icon" href="assets/mark.svg">
   <link rel="preload" as="image" href="assets/forest.jpg" fetchpriority="high">
-  <link rel="stylesheet" href="assets/site.css?v=2">
-  <script src="assets/site.js?v=2" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=3">
+  <script src="assets/site.js?v=3" defer></script>
 </head>
 <body class="landing">
   <a class="skip" href="#main">跳到内容</a>
   <header class="top">
     <nav class="nav" aria-label="主导航">
       <a class="brand" href="./"><img src="assets/mark.svg" alt="" width="25" height="25">NOCTIS</a>
-      <div class="nav-links"><a href="#scenes">试听</a><a href="#features">功能</a><a href="support.html">支持</a></div>
+      <div class="nav-links"><a href="#scenes">试听</a><a href="#features">功能</a><a href="sleep.html">睡眠工具</a><a href="support.html">支持</a></div>
       <a class="nav-cta" href="support.html#android">获取试用版 <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <img class="hero-poster" src="assets/forest.jpg" alt="" fetchpriority="high">
-      <video class="hero-video" data-src="assets/forest.mp4" muted playsinline loop preload="none" aria-hidden="true"></video>
+      <div class="hero-media" aria-hidden="true">
+        <img class="hero-poster" src="assets/forest.jpg" alt="" fetchpriority="high">
+        <video class="hero-video" data-src="assets/forest.mp4" muted playsinline loop preload="none"></video>
+      </div>
       <div class="wrap hero-layout">
         <div class="hero-inner">
           <p class="eyebrow">NOCTIS · Android 离线声境</p>
@@ -39,18 +41,18 @@
     </section>
     <section class="section listen" id="scenes">
       <div class="wrap">
-        <div class="section-heading">
+        <div class="section-heading" data-reveal>
           <div><p class="eyebrow">自然声试听</p><h2>你想听见什么？</h2></div>
           <p>选一处风景，按下播放。切换场景时，声音会一起过渡。</p>
         </div>
-        <div class="scene">
+        <div class="scene" data-reveal>
           <div class="scene-images" aria-hidden="true">
             <img class="scene-image is-current" data-photo="forest" src="assets/forest.jpg" alt="" loading="lazy">
             <img class="scene-image" data-photo="stream" src="assets/stream.jpg" alt="" loading="lazy">
             <img class="scene-image" data-photo="ocean" src="assets/ocean.jpg" alt="" loading="lazy">
           </div>
           <div class="scene-caption">
-            <div><h3 id="scene-name">林风</h3><p id="scene-description">林间的风穿过树梢。</p></div>
+            <div class="scene-copy"><h3 id="scene-name">林风</h3><p id="scene-description">林间的风穿过树梢。</p></div>
             <button class="play" id="preview" type="button" aria-label="试听林风" aria-pressed="false"><span class="play-glyph" aria-hidden="true"></span></button>
           </div>
         </div>
@@ -69,8 +71,8 @@
     </section>
     <section class="section features" id="features">
       <div class="wrap">
-        <div class="section-heading"><div><p class="eyebrow">App 功能</p><h2>声音，按你的方式。</h2></div></div>
-        <div class="product">
+        <div class="section-heading" data-reveal><div><p class="eyebrow">App 功能</p><h2>声音，按你的方式。</h2></div></div>
+        <div class="product" data-reveal data-feature="field">
           <div class="product-copy">
             <div class="feature-tabs" role="tablist" aria-label="探索 NOCTIS 功能">
               <button id="tab-field" role="tab" type="button" aria-selected="true" aria-controls="panel-field">雨雪声境</button>
@@ -101,13 +103,13 @@
       </div>
     </section>
     <section class="closing section" aria-labelledby="closing-title">
-      <div class="wrap">
+      <div class="wrap" data-reveal>
         <h2 id="closing-title">把喜欢的声音留在手机里。</h2>
         <p>自然声、混音和播放定时，离线就能用。</p>
         <a class="button" href="support.html#android">获取 Android 试用版 <span aria-hidden="true">↗</span></a>
       </div>
     </section>
   </main>
-  <footer class="footer"><div class="wrap"><a class="brand" href="./">NOCTIS</a><nav aria-label="页脚导航"><a href="privacy.html">隐私政策</a><a href="support.html">用户支持</a><a href="terms.html">订阅服务条款</a><a href="credits.html">素材许可</a></nav></div></footer>
+  <footer class="footer"><div class="wrap"><a class="brand" href="./">NOCTIS</a><nav aria-label="页脚导航"><a href="sleep.html">睡眠工具</a><a href="privacy.html">隐私政策</a><a href="support.html">用户支持</a><a href="terms.html">订阅服务条款</a><a href="credits.html">素材许可</a></nav></div></footer>
 </body>
 </html>

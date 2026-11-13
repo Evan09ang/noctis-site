@@ -2,6 +2,22 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const hero = document.querySelector('.hero-video');
 const motion = document.querySelector('.motion');
 
+if ('IntersectionObserver' in window && !reducedMotion.matches) {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.remove('reveal-pending');
+      observer.unobserve(entry.target);
+    }
+  }, { rootMargin: '0px 0px -30px' });
+
+  document.querySelectorAll('[data-reveal]').forEach((element) => {
+    if (element.getBoundingClientRect().top < window.innerHeight) return;
+    element.classList.add('reveal-pending');
+    revealObserver.observe(element);
+  });
+}
+
 if (hero && motion) {
   let visible = true;
   let userPaused = false;
@@ -52,6 +68,7 @@ if (preview && buttons.length) {
   const photos = [...document.querySelectorAll('[data-photo]')];
   const volume = document.querySelector('#preview-volume');
   const name = document.querySelector('#scene-name');
+  const caption = name.parentElement;
   const description = document.querySelector('#scene-description');
   const status = document.querySelector('#audio-status');
   const scenes = {
@@ -66,6 +83,7 @@ if (preview && buttons.length) {
   let revision = 0;
   let animation = 0;
   let fading = false;
+  let captionAnimation;
   const level = () => Number(volume.value) / 100;
 
   function updateButton() {
@@ -140,6 +158,13 @@ if (preview && buttons.length) {
     photos.forEach((photo) => photo.classList.toggle('is-current', photo.dataset.photo === selection));
     name.textContent = scenes[selection].name;
     description.textContent = scenes[selection].description;
+    if (!reducedMotion.matches && caption.animate) {
+      captionAnimation?.cancel();
+      captionAnimation = caption.animate([
+        { opacity: .35, transform: 'translateY(7px)' },
+        { opacity: 1, transform: 'none' },
+      ], { duration: 460, easing: 'cubic-bezier(.22, .75, .22, 1)' });
+    }
     status.textContent = '';
     updateButton();
     if (requested) playSelection();
@@ -169,6 +194,7 @@ function selectFeature(tab) {
     screen.classList.toggle('is-current', selected);
     screen.setAttribute('aria-hidden', String(!selected));
   });
+  tab.closest('.product').dataset.feature = feature;
 }
 
 featureTabs.forEach((tab, index) => {
