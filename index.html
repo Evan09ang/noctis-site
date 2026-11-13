@@ -9,7 +9,8 @@
   <link rel="icon" href="assets/mark.svg">
   <link rel="preload" as="image" href="assets/forest.jpg" fetchpriority="high">
   <link rel="stylesheet" href="assets/site.css?v=3">
-  <script src="assets/site.js?v=3" defer></script>
+  <link rel="stylesheet" href="assets/cinema.css?v=1">
+  <script src="assets/site.js?v=4" defer></script>
 </head>
 <body class="landing">
   <a class="skip" href="#main">跳到内容</a>
@@ -20,8 +21,10 @@
       <a class="nav-cta" href="support.html#android">获取试用版 <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
+  <button class="cinema-toggle" type="button" hidden>暂停动效</button>
   <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
+    <section class="chapter opening" aria-labelledby="hero-title">
+      <div class="hero chapter-stage">
       <div class="hero-media" aria-hidden="true">
         <img class="hero-poster" src="assets/forest.jpg" alt="" fetchpriority="high">
         <video class="hero-video" data-src="assets/forest.mp4" muted playsinline loop preload="none"></video>
@@ -29,7 +32,7 @@
       <div class="wrap hero-layout">
         <div class="hero-inner">
           <p class="eyebrow">NOCTIS · Android 离线声境</p>
-          <h1 id="hero-title">让夜晚<br>慢下来。</h1>
+          <h1 id="hero-title"><span>让夜晚</span><span>慢下来。</span></h1>
           <p class="hero-description">一场雨，一阵风，或者一段小睡。<br>把想听的声音留在身边。</p>
           <div class="hero-actions"><a class="button" href="#scenes">试听声境 <span aria-hidden="true">↓</span></a><a class="hero-link" href="#features">探索功能 <span aria-hidden="true">↗</span></a></div>
         </div>
@@ -37,15 +40,21 @@
           <div class="device"><img src="assets/app-home.jpg" alt="NOCTIS 首页，显示雨景、播放控制和右上角的小睡叫醒入口" width="780" height="1688"></div>
         </figure>
       </div>
-      <button class="motion" type="button" hidden>暂停背景</button>
+      </div>
     </section>
-    <section class="section listen" id="scenes">
-      <div class="wrap">
-        <div class="section-heading" data-reveal>
-          <div><p class="eyebrow">自然声试听</p><h2>你想听见什么？</h2></div>
+    <section class="chapter listen" id="scenes" aria-labelledby="scenes-title">
+      <div class="listen-stage chapter-stage">
+        <div class="listen-backdrop" aria-hidden="true">
+          <img class="scene-image is-current" data-photo="forest" src="assets/forest.jpg" alt="" loading="lazy">
+          <img class="scene-image" data-photo="stream" src="assets/stream.jpg" alt="" loading="lazy">
+          <img class="scene-image" data-photo="ocean" src="assets/ocean.jpg" alt="" loading="lazy">
+        </div>
+        <div class="wrap">
+        <div class="section-heading">
+          <div><p class="eyebrow">自然声试听</p><h2 id="scenes-title">你想听见<br>什么？</h2></div>
           <p>选一处风景，按下播放。切换场景时，声音会一起过渡。</p>
         </div>
-        <div class="scene" data-reveal>
+        <div class="scene">
           <div class="scene-images" aria-hidden="true">
             <img class="scene-image is-current" data-photo="forest" src="assets/forest.jpg" alt="" loading="lazy">
             <img class="scene-image" data-photo="stream" src="assets/stream.jpg" alt="" loading="lazy">
@@ -67,12 +76,15 @@
         <audio id="sample" preload="none" loop></audio>
         <audio id="sample-next" preload="none" loop></audio>
         <p id="audio-status" role="status"></p>
+        </div>
       </div>
     </section>
-    <section class="section features" id="features">
-      <div class="wrap">
-        <div class="section-heading" data-reveal><div><p class="eyebrow">App 功能</p><h2>声音，按你的方式。</h2></div></div>
-        <div class="product" data-reveal data-feature="field">
+    <section class="chapter features" id="features" aria-labelledby="features-title">
+      <div class="features-stage chapter-stage">
+        <div class="feature-light" aria-hidden="true"></div>
+        <div class="wrap">
+        <div class="section-heading"><div><p class="eyebrow">App 功能</p><h2 id="features-title">声音，按你的方式。</h2></div></div>
+        <div class="product" data-feature="field">
           <div class="product-copy">
             <div class="feature-tabs" role="tablist" aria-label="探索 NOCTIS 功能">
               <button id="tab-field" role="tab" type="button" aria-selected="true" aria-controls="panel-field">雨雪声境</button>
@@ -100,10 +112,12 @@
             <figcaption>NOCTIS 试用版界面</figcaption>
           </figure>
         </div>
+        </div>
       </div>
     </section>
-    <section class="closing section" aria-labelledby="closing-title">
-      <div class="wrap" data-reveal>
+    <section class="closing section chapter" aria-labelledby="closing-title">
+      <img class="closing-backdrop" src="assets/ocean.jpg" alt="" loading="lazy">
+      <div class="wrap">
         <h2 id="closing-title">把喜欢的声音留在手机里。</h2>
         <p>自然声、混音和播放定时，离线就能用。</p>
         <a class="button" href="support.html#android">获取 Android 试用版 <span aria-hidden="true">↗</span></a>
