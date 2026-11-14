@@ -124,6 +124,42 @@ details p { padding-top: 9px; }
 .status-note { border-left: 2px solid var(--gold); padding-left: 14px; }
 .article .button { margin-top: 16px; }
 
+.survey-invite {
+  position: fixed;
+  z-index: 8;
+  left: max(16px, env(safe-area-inset-left));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: min(340px, calc(100% - 32px));
+  padding: 21px;
+  border: 1px solid #f4d9a43f;
+  border-radius: 22px;
+  background: #152019f5;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 12px 36px #0006;
+  animation: panel-enter .4s var(--ease) both;
+}
+.survey-invite h2 { padding-right: 36px; font-size: 18px; line-height: 1.35; }
+.survey-invite p { margin-block: 9px 14px; font-size: 14px; }
+.survey-invite .button { min-height: 44px; padding: 8px 16px; font-size: 14px; }
+.survey-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 23px;
+  line-height: 1;
+}
+.survey-close:hover { background: #ffffff12; color: var(--ink); }
+.cinema-off .survey-invite { animation: none; }
+@media (max-width: 600px) {
+  .survey-invite { bottom: calc(68px + env(safe-area-inset-bottom)); }
+}
+
 /* Motion stays on separate layers so scrolling and tab changes can overlap. */
 [data-reveal] { transition: opacity .7s var(--ease), transform .85s var(--ease); }
 .reveal-pending { opacity: 0; transform: translateY(25px); }

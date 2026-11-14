@@ -2,6 +2,27 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const hero = document.querySelector('.hero-video');
 const motion = document.querySelector('.cinema-toggle');
 
+const surveyInvite = document.querySelector('.survey-invite');
+if (surveyInvite) {
+  const surveyLink = surveyInvite.querySelector('a');
+  const dismissalKey = `noctis-survey-dismissed:${surveyLink.pathname}`;
+  let dismissed = false;
+  try { dismissed = localStorage.getItem(dismissalKey) === '1'; } catch { /* Storage is optional. */ }
+
+  if (!dismissed) window.setTimeout(() => { surveyInvite.hidden = false; }, 2400);
+
+  function dismissSurvey() {
+    surveyInvite.hidden = true;
+    try { localStorage.setItem(dismissalKey, '1'); } catch { /* Dismiss for this visit. */ }
+  }
+
+  surveyInvite.querySelector('button').addEventListener('click', dismissSurvey);
+  surveyLink.addEventListener('click', dismissSurvey);
+  surveyInvite.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') dismissSurvey();
+  });
+}
+
 if ('IntersectionObserver' in window && !reducedMotion.matches) {
   const revealObserver = new IntersectionObserver((entries, observer) => {
     for (const entry of entries) {
