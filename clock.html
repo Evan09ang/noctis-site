@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c100e">
+  <meta name="description" content="在浏览器里使用 NOCTIS 床头钟。四款钟面，支持日期、低亮度和雨声。">
+  <title>网页版床头钟 · NOCTIS</title>
+  <link rel="icon" href="assets/mark.svg">
+  <link rel="stylesheet" href="assets/site.css?v=4">
+  <link rel="stylesheet" href="assets/tools.css?v=1">
+  <script type="module" src="assets/clock.js?v=1"></script>
+</head>
+<body>
+  <a class="skip" href="#main">跳到内容</a>
+  <header class="top">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="./"><img src="assets/mark.svg" width="25" height="25" alt="">NOCTIS</a>
+      <div class="nav-links"><a href="rain.html">雨声实验室</a><a href="clock.html" aria-current="page">床头钟</a><a href="sleep.html">睡眠工具</a></div>
+      <a class="nav-cta" href="support.html#android">Android 下载 ↗</a>
+    </nav>
+  </header>
+  <main class="wrap tool-main" id="main">
+    <div class="tool-title clock-heading">
+      <h1>床头钟</h1>
+      <p>使用设备本地时间。选一个钟面，放在床头或桌边。</p>
+    </div>
+    <section class="clock-stage" id="clock-stage" aria-label="当前时间" data-face="serif">
+      <div class="clock-top">
+        <span>NOCTIS</span>
+        <button class="tool-secondary" type="button" id="clock-full" hidden>全屏</button>
+      </div>
+      <div class="clock-display">
+        <time id="clock-time"><span id="clock-hours">--</span><span class="clock-colon">:</span><span id="clock-minutes">--</span></time>
+        <span id="clock-daypart" hidden></span>
+        <p id="clock-date"></p>
+      </div>
+      <div class="clock-bottom">
+        <button class="tool-secondary" id="clock-play" type="button">播放雨声</button>
+        <button class="tool-secondary" id="clock-wake" type="button" aria-pressed="false">常亮</button>
+        <p id="clock-status" class="tool-status" role="status"></p>
+      </div>
+    </section>
+    <div class="clock-settings" aria-label="自定义钟面">
+      <fieldset class="clock-faces">
+        <legend>钟面</legend>
+        <div class="tool-pills">
+          <label><input type="radio" name="face" value="serif" checked><span>月光衬线</span></label>
+          <label><input type="radio" name="face" value="flip"><span>翻页数字</span></label>
+          <label><input type="radio" name="face" value="outline"><span>空心霓虹</span></label>
+          <label><input type="radio" name="face" value="mono"><span>极简等宽</span></label>
+        </div>
+      </fieldset>
+      <div class="clock-options">
+        <label class="clock-check"><input type="checkbox" id="show-date" checked> 显示日期</label>
+        <label class="clock-check"><input type="checkbox" id="hours-24" checked> 24 小时制</label>
+        <label class="clock-brightness" for="clock-brightness">亮度 <input type="range" id="clock-brightness" min="50" max="100" value="88"></label>
+      </div>
+    </div>
+    <p class="clock-back"><a class="text-link" id="clock-to-rain" href="rain.html">去雨声实验室调一场雨 ↗</a></p>
+    <noscript><p>床头钟需要启用 JavaScript。</p></noscript>
+  </main>
+  <footer class="footer"><div class="wrap"><a class="brand" href="./">NOCTIS</a><nav aria-label="页脚导航"><a href="rain.html">雨声实验室</a><a href="privacy.html">隐私政策</a><a href="credits.html">素材许可</a><a href="support.html">用户支持</a></nav></div></footer>
+</body>
+</html>

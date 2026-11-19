@@ -10,7 +10,7 @@
   <link rel="preload" as="image" href="assets/forest.jpg" fetchpriority="high">
   <link rel="stylesheet" href="assets/site.css?v=4">
   <link rel="stylesheet" href="assets/cinema.css?v=1">
-  <link rel="stylesheet" href="assets/product.css?v=1">
+  <link rel="stylesheet" href="assets/product.css?v=2">
   <script src="assets/site.js?v=5" defer></script>
 </head>
 <body class="landing">
@@ -18,7 +18,7 @@
   <header class="top">
     <nav class="nav" aria-label="主导航">
       <a class="brand" href="./"><img src="assets/mark.svg" alt="" width="25" height="25">NOCTIS</a>
-      <div class="nav-links"><a href="#scenes">试听</a><a href="#features">功能</a><a href="sleep.html">睡眠工具</a><a href="about.html">关于</a></div>
+      <div class="nav-links"><a href="rain.html">雨声实验室</a><a href="clock.html">床头钟</a><a href="#features">App 功能</a><a href="sleep.html">睡眠工具</a></div>
       <a class="nav-cta" href="support.html#android">Android 下载 <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
@@ -35,12 +35,31 @@
           <p class="eyebrow">NOCTIS · Android 离线声境</p>
           <h1 id="hero-title"><span>让夜晚</span><span>慢下来。</span></h1>
           <p class="hero-description">15 种内置环境声。离线播放、自由混音和小睡叫醒，免费下载，无广告。</p>
-          <div class="hero-actions"><a class="button" href="#scenes">试听声境 <span aria-hidden="true">↓</span></a><a class="hero-link" href="#features">探索功能 <span aria-hidden="true">↗</span></a></div>
+          <div class="hero-actions"><a class="button" href="rain.html">调一场雨 <span aria-hidden="true">↗</span></a><a class="hero-link" href="#scenes">试听自然声 <span aria-hidden="true">↓</span></a></div>
         </div>
         <figure class="hero-device">
           <div class="device"><img src="assets/app-home.jpg" alt="NOCTIS 首页，显示雨景、播放控制和右上角的小睡叫醒入口" width="780" height="1688"></div>
         </figure>
       </div>
+      </div>
+    </section>
+    <section class="web-tools section" id="web-tools" aria-labelledby="web-tools-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div><p class="eyebrow">打开网页就能用</p><h2 id="web-tools-title">从一场雨开始。</h2></div>
+        </div>
+        <div class="web-tool-grid">
+          <a class="web-tool-card web-tool-rain" href="rain.html">
+            <span class="web-tool-mark" aria-hidden="true"></span>
+            <div><h3>雨声实验室</h3><p>拖动光点改变雨势和距离。调好的雨可以分享。</p></div>
+            <span class="web-tool-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="web-tool-card web-tool-clock" href="clock.html">
+            <span class="web-clock-art" aria-hidden="true">22:48</span>
+            <div><h3>床头钟</h3><p>四种钟面。全屏显示时间，也能听你调好的雨。</p></div>
+            <span class="web-tool-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
       </div>
     </section>
     <section class="chapter listen" id="scenes" aria-labelledby="scenes-title">
@@ -95,6 +114,7 @@
             <div class="feature-panels">
               <section class="feature-panel" id="panel-field" role="tabpanel" aria-labelledby="tab-field">
                 <h3>雨下多大，<br>离你多远。</h3><p>在四象限拖动光点，调节雨雪的轻重与远近。窗边、林间和旷野，听起来各不相同。</p>
+                <a class="text-link" href="rain.html">在网页里试试调雨 ↗</a>
               </section>
               <section class="feature-panel" id="panel-mix" role="tabpanel" aria-labelledby="tab-mix" hidden>
                 <h3>一段音乐，<br>加一点自然声。</h3><p>把本地音乐和环境声放在一起，分别调整音量。喜欢的组合可以保存在设备里。</p>
