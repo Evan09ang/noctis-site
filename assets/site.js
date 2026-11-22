@@ -1,155 +1,50 @@
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const hero = document.querySelector('.hero-video');
-const motion = document.querySelector('.cinema-toggle');
+const player = document.querySelector('.player');
 
-const surveyInvite = document.querySelector('.survey-invite');
-if (surveyInvite) {
-  const surveyLink = surveyInvite.querySelector('a');
-  const dismissalKey = `noctis-survey-dismissed:${surveyLink.pathname}`;
-  let dismissed = false;
-  try { dismissed = localStorage.getItem(dismissalKey) === '1'; } catch { /* Storage is optional. */ }
+if (player) {
+  const scenery = player.querySelector('.hero-video');
+  const motion = player.querySelector('.motion-toggle');
+  let inView = true;
+  let motionPaused = false;
 
-  if (!dismissed) window.setTimeout(() => { surveyInvite.hidden = false; }, 2400);
-
-  function dismissSurvey() {
-    surveyInvite.hidden = true;
-    try { localStorage.setItem(dismissalKey, '1'); } catch { /* Dismiss for this visit. */ }
-  }
-
-  surveyInvite.querySelector('button').addEventListener('click', dismissSurvey);
-  surveyLink.addEventListener('click', dismissSurvey);
-  surveyInvite.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') dismissSurvey();
-  });
-}
-
-if ('IntersectionObserver' in window && !reducedMotion.matches) {
-  const revealObserver = new IntersectionObserver((entries, observer) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.remove('reveal-pending');
-      observer.unobserve(entry.target);
-    }
-  }, { rootMargin: '0px 0px -30px' });
-
-  document.querySelectorAll('[data-reveal]').forEach((element) => {
-    if (element.getBoundingClientRect().top < window.innerHeight) return;
-    element.classList.add('reveal-pending');
-    revealObserver.observe(element);
-  });
-}
-
-if (hero && motion) {
-  const chapters = [...document.querySelectorAll('.chapter')];
-  const header = document.querySelector('.top');
-  const feature = document.querySelector('.features');
-  const storyTabs = [...feature.querySelectorAll('[role="tab"]')];
-  let visible = true;
-  let userPaused = false;
-  let frame = 0;
-  const clampProgress = (value) => Math.max(0, Math.min(1, value));
-
-  function renderStory() {
-    frame = 0;
-    const viewport = window.innerHeight;
-    const navHeight = header.offsetHeight;
-    const scroll = window.scrollY;
-    const scrollLimit = document.documentElement.scrollHeight - viewport;
-    const positions = chapters.map((chapter) => chapter.getBoundingClientRect());
-    chapters.forEach((chapter, index) => {
-      const { top, bottom } = positions[index];
-      const stage = chapter.querySelector('.chapter-stage');
-      const hold = chapter.classList.contains('is-pinned') ? chapter.offsetHeight - stage.offsetHeight : 0;
-      const travel = hold > 0 ? clampProgress((navHeight - top) / hold)
-        : index === 0 ? clampProgress((navHeight - top) / (viewport * .6))
-        : clampProgress((viewport - top) / (viewport - navHeight));
-      const arrive = clampProgress((top - navHeight) / (viewport - navHeight));
-      const leave = clampProgress((viewport - bottom) / (viewport - navHeight));
-      chapter.style.setProperty('--arrive', arrive);
-      chapter.style.setProperty('--travel', travel);
-      chapter.style.setProperty('--leave', leave);
-      if (chapter === feature && hold > 0 && !feature.hasAttribute('data-manual') && !feature.contains(document.activeElement)) {
-        const tab = storyTabs[Math.min(storyTabs.length - 1, Math.floor(travel * storyTabs.length))];
-        if (tab.getAttribute('aria-selected') !== 'true') selectFeature(tab);
-      }
-    });
-    header.style.setProperty('--reading-progress', scrollLimit > 0 ? scroll / scrollLimit : 0);
-  }
-
-  function scheduleStory() {
-    if (!userPaused && !reducedMotion.matches && !frame) frame = requestAnimationFrame(renderStory);
-  }
-
-  function sizeChapters() {
-    const room = window.innerHeight - header.offsetHeight;
-    for (const chapter of chapters) {
-      const stage = chapter.querySelector('.chapter-stage');
-      if (!stage) continue;
-      const pin = room >= 500 && stage.offsetHeight <= room + 1;
-      chapter.classList.toggle('is-pinned', pin);
-      const distance = chapter === feature ? room * 1.13 : room * .57;
-      chapter.style.setProperty('--hold', `${Math.round(distance)}px`);
-    }
-    scheduleStory();
-  }
-
-  function updateStory(keepPlace = false) {
-    const current = keepPlace ? chapters.find((chapter) => chapter.getBoundingClientRect().bottom > header.offsetHeight + 2) : null;
-    const position = current?.getBoundingClientRect().top;
-    const active = !reducedMotion.matches && !userPaused;
-    document.body.classList.toggle('cinema', active);
-    document.body.classList.toggle('cinema-off', !active);
+  async function updateMotion() {
+    const forest = player.querySelector('[data-scene="forest"]').getAttribute('aria-pressed') === 'true';
+    const animate = !reducedMotion.matches && !motionPaused && !document.hidden && inView;
     motion.hidden = reducedMotion.matches;
-    motion.textContent = active ? '暂停动效' : '开启动效';
-    if (!active && frame) {
-      cancelAnimationFrame(frame);
-      frame = 0;
-    }
-    sizeChapters();
-    if (current) {
-      const newPosition = current.getBoundingClientRect().top;
-      window.scrollBy({ top: newPosition - Math.max(-100, position), behavior: 'instant' });
-    }
-    updateBackground();
-  }
-
-  async function updateBackground() {
-    if (reducedMotion.matches || userPaused || document.hidden || !visible) {
-      hero.pause();
+    motion.setAttribute('aria-pressed', String(motionPaused));
+    motion.setAttribute('aria-label', motionPaused ? '播放背景动效' : '暂停背景动效');
+    player.classList.toggle('motion-paused', !animate);
+    if (!animate || !forest) {
+      scenery.pause();
+      scenery.classList.remove('is-ready');
       return;
     }
-    if (!hero.hasAttribute('src')) hero.src = hero.dataset.src;
+    if (!scenery.hasAttribute('src')) scenery.src = scenery.dataset.src;
     try {
-      await hero.play();
-      if (userPaused || reducedMotion.matches || document.hidden || !visible) {
-        hero.pause();
-        return;
-      }
-      hero.classList.add('is-ready');
+      await scenery.play();
+      scenery.classList.toggle('is-ready', !scenery.paused && !reducedMotion.matches);
     } catch {
-      // Keep the poster visible if autoplay is unavailable.
+      scenery.classList.remove('is-ready');
     }
   }
 
-  motion.addEventListener('click', () => {
-    userPaused = !userPaused;
-    updateStory(true);
-  });
-  reducedMotion.addEventListener('change', () => updateStory(true));
-  window.addEventListener('scroll', scheduleStory, { passive: true });
-  window.addEventListener('resize', sizeChapters);
-  feature.addEventListener('focusin', () => feature.setAttribute('data-manual', ''));
-  document.addEventListener('visibilitychange', updateBackground);
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      updateBackground();
+      inView = entry.isIntersecting;
+      updateMotion();
     });
-    observer.observe(hero);
-  } else {
-    updateBackground();
+    observer.observe(player);
   }
-  updateStory();
+  motion.addEventListener('click', () => {
+    motionPaused = !motionPaused;
+    updateMotion();
+  });
+  player.addEventListener('click', (event) => {
+    if (event.target.closest('[data-scene]')) updateMotion();
+  });
+  reducedMotion.addEventListener('change', updateMotion);
+  document.addEventListener('visibilitychange', updateMotion);
+  updateMotion();
 }
 
 const buttons = [...document.querySelectorAll('[data-scene]')];
@@ -160,14 +55,9 @@ if (preview && buttons.length) {
   const photos = [...document.querySelectorAll('[data-photo]')];
   const volume = document.querySelector('#preview-volume');
   const name = document.querySelector('#scene-name');
-  const caption = name.parentElement;
-  const description = document.querySelector('#scene-description');
+  const caption = name;
   const status = document.querySelector('#audio-status');
-  const scenes = {
-    forest: { name: '林风', description: '林间的风穿过树梢。' },
-    stream: { name: '溪流', description: '水声从山石间落下。' },
-    ocean: { name: '海浪', description: '潮水一层层涌上岸。' },
-  };
+  const scenes = { forest: '林风', stream: '溪流', ocean: '海浪' };
 
   let selection = 'forest';
   let active = tracks[0];
@@ -180,7 +70,7 @@ if (preview && buttons.length) {
 
   function updateButton() {
     preview.setAttribute('aria-pressed', String(requested));
-    preview.setAttribute('aria-label', (requested ? '暂停' : '试听') + scenes[selection].name);
+    preview.setAttribute('aria-label', (requested ? '暂停' : '试听') + scenes[selection]);
   }
 
   function stop() {
@@ -248,9 +138,8 @@ if (preview && buttons.length) {
     selection = button.dataset.scene;
     buttons.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
     photos.forEach((photo) => photo.classList.toggle('is-current', photo.dataset.photo === selection));
-    name.textContent = scenes[selection].name;
-    description.textContent = scenes[selection].description;
-    if (!reducedMotion.matches && !document.body.classList.contains('cinema-off') && caption.animate) {
+    name.textContent = scenes[selection];
+    if (!reducedMotion.matches && !player.classList.contains('motion-paused') && caption.animate) {
       captionAnimation?.cancel();
       captionAnimation = caption.animate([
         { opacity: .35, transform: 'translateY(7px)' },

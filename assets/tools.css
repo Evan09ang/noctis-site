@@ -1,48 +1,42 @@
 @font-face {
-  font-family: Instrument Serif;
-  src: url('InstrumentSerif-Regular.ttf') format('truetype');
-  font-display: swap;
-}
-@font-face {
   font-family: IBM Plex Mono;
   src: url('IBMPlexMono-Regular.ttf') format('truetype');
   font-display: swap;
 }
 
-.tool-main { max-width: 1080px; padding-block: clamp(30px, 6vw, 78px) 76px; }
-.tool-title { margin-bottom: clamp(22px, 4vw, 42px); }
-.tool-title h1 { font-size: clamp(2.5rem, 6.2vw, 5.4rem); letter-spacing: -.055em; line-height: 1.08; margin: 8px 0 13px; }
-.tool-title > p:last-child { font-size: clamp(1rem, 1.7vw, 1.18rem); }
+.tool-main { padding-block: clamp(28px, 5vw, 76px) clamp(48px, 7vw, 95px); }
+.tool-title h1 { margin: 0; }
+.tool-title p { font-size: 1rem; }
 .tool-secondary, .tool-pills button, .tool-pills label span {
   display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
-  padding: 8px 15px; border-radius: 999px; border: 1px solid #ffffff35; background: #0d1612a8;
+  padding: 8px 15px; border-radius: 999px; border: 1px solid var(--line); background: transparent;
   color: var(--ink); font-size: .875rem; line-height: 1.2;
 }
-.tool-secondary:hover, .tool-pills button:hover, .tool-pills label:hover span { background-color: #ffffff12; }
+.tool-secondary:hover, .tool-pills button:hover, .tool-pills label:hover span { background-color: #84917c22; }
 .tool-secondary[aria-pressed="true"], .tool-pills button[aria-pressed="true"], .tool-pills input:checked + span {
-  background: #d6e4d3; color: #152019; border-color: transparent;
+  background: var(--pine); color: var(--paper); border-color: var(--pine);
 }
 .tool-actions, .tool-pills { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .tool-actions .button { border: 0; }
+.rain-controls .tool-actions { margin: 0; }
 .tool-actions .button:disabled { cursor: wait; opacity: .7; }
-.tool-status { color: #e3ede4; font-size: .86rem; }
+.tool-status { color: var(--muted); font-size: .86rem; }
 .tool-status:empty { display: none; }
-.tool-main .text-link { color: var(--gold); }
+.tool-main .text-link { color: var(--pine); }
 
 .rain-console {
   display: grid; grid-template-columns: minmax(0, 1.46fr) minmax(284px, 1fr);
-  background: linear-gradient(132deg, #223229, #131d17 54%, #101713);
-  border: 1px solid #ffffff29; border-radius: clamp(18px, 3vw, 36px); overflow: hidden;
-  box-shadow: 0 22px 80px #0005;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 18px; overflow: hidden;
 }
 .rain-visual {
   display: grid; align-items: center; min-width: 0; padding: clamp(13px, 3vw, 33px);
-  background: radial-gradient(ellipse at 60% 10%, #9faf9e24, transparent 80%), #18251d;
+  background: var(--night);
 }
 .rain-pad {
   --point-x: 26%; --point-y: 28%;
   position: relative; aspect-ratio: 1.12; isolation: isolate; overflow: hidden; touch-action: none; cursor: crosshair;
-  border-radius: clamp(14px, 2.5vw, 27px); border: 1px solid #e5efe34d;
+  border-radius: 12px; border: 1px solid #e5efe34d;
   background: linear-gradient(160deg, #0b191680, #09171266 42%, #0a1918b0), url('rain-window.jpg') center 40% / cover;
 }
 .rain-pad canvas, .rain-cross { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
@@ -69,24 +63,26 @@
 .tool-ranges label { display: grid; gap: 3px; font-size: .84rem; color: var(--muted); }
 .tool-ranges label > span { display: flex; justify-content: space-between; }
 .tool-ranges output { font-variant-numeric: tabular-nums; color: var(--ink); }
-.tool-ranges input, .clock-options input { accent-color: var(--gold); }
+.tool-ranges input, .clock-options input { accent-color: var(--pine); }
 .tool-ranges input[type="range"], .clock-brightness input { width: 100%; height: 28px; margin: 0; }
 .rain-to-clock { align-self: flex-start; padding-block: 6px; }
 .share-link { display: grid; gap: 6px; min-width: 0; font-size: .84rem; color: var(--muted); }
-.share-link input { min-width: 0; width: 100%; background: #0e1611; border: 1px solid var(--line); color: var(--ink); padding: 8px; border-radius: 9px; }
+.share-link input { min-width: 0; width: 100%; background: var(--paper); border: 1px solid var(--line); color: var(--ink); padding: 8px; border-radius: 9px; }
 
 .clock-heading h1 { margin-top: 0; }
 .clock-stage {
   --clock-brightness: .88;
   display: flex; flex-direction: column; justify-content: space-between; align-items: stretch;
-  min-height: clamp(290px, 44vw, 495px); border-radius: clamp(18px, 3vw, 36px);
+  min-height: clamp(290px, 44vw, 495px); border-radius: 18px;
   border: 1px solid #ffffff2b; overflow: hidden; position: relative;
-  background: linear-gradient(130deg, #203129e0, #071211ef), url('rain-window.jpg') center 44% / cover;
+  background: radial-gradient(ellipse at 50% 0%, #405f47, transparent 66%), var(--night);
   color: #ecd4ad;
 }
+.clock-stage .tool-secondary { background: #0c1d16aa; color: var(--paper); }
+.clock-stage .tool-secondary[aria-pressed="true"] { background: var(--gold); color: var(--night); }
 .clock-stage:fullscreen { width: 100%; height: 100%; border: none; border-radius: 0; }
 .clock-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px clamp(14px, 3vw, 28px); }
-.clock-top > span { font-size: .74rem; font-weight: 730; letter-spacing: .24em; }
+.clock-top > span { font: 26px/1 "Instrument Serif", Georgia, serif; letter-spacing: -.02em; }
 .clock-display {
   display: grid; place-items: center; gap: 5px; padding: 0 12px;
   text-align: center; opacity: var(--clock-brightness);
@@ -103,7 +99,7 @@
 #clock-daypart, #clock-date { color: #efe5cc; font-size: clamp(.84rem, 2vw, 1.1rem); letter-spacing: .07em; }
 .clock-bottom { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 14px; }
 .clock-bottom .tool-status { flex-basis: 100%; text-align: center; }
-.clock-settings { display: flex; flex-wrap: wrap; gap: 22px clamp(22px, 5vw, 60px); align-items: end; margin-top: 22px; }
+.clock-settings { border-bottom: 1px solid var(--line); padding-bottom: 16px; display: flex; flex-wrap: wrap; gap: 22px clamp(22px, 5vw, 60px); align-items: end; margin-top: 22px; }
 .clock-faces { margin: 0; padding: 0; min-width: 0; border: 0; }
 .clock-faces legend { padding: 0; margin-bottom: 7px; color: var(--muted); font-size: .84rem; }
 .clock-faces label { position: relative; cursor: pointer; }
