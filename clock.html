@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f4f0e7">
+  <meta name="theme-color" content="#0e1a15">
   <meta name="description" content="在浏览器里使用 NOCTIS 床头钟。四款钟面，支持日期、低亮度和雨声。">
   <title>网页版床头钟 · NOCTIS</title>
   <link rel="icon" href="assets/mark.svg">
-  <link rel="stylesheet" href="assets/site.css?v=6">
-  <link rel="stylesheet" href="assets/tools.css?v=2">
+  <link rel="stylesheet" href="assets/site.css?v=7">
+  <link rel="stylesheet" href="assets/tools.css?v=7">
   <script type="module" src="assets/clock.js?v=1"></script>
 </head>
 <body>
@@ -17,8 +17,8 @@
     <nav class="nav wrap" aria-label="主导航">
       <a class="brand" href="index.html" aria-label="NOCTIS 首页"><img src="assets/mark.svg" alt="" width="30" height="30"><span>NOCTIS</span></a>
       <div class="nav-links"><a href="rain.html">雨声实验室</a><a href="clock.html" aria-current="page">床头钟</a><a href="sleep.html">睡眠工具</a><a href="about.html">关于</a></div>
-      <a class="nav-cta" href="support.html#android">Android 下载 <span aria-hidden="true">↓</span></a>
-      <details class="nav-menu"><summary aria-label="导航菜单"><i aria-hidden="true"></i></summary><div><a href="rain.html">雨声实验室</a><a href="clock.html" aria-current="page">床头钟</a><a href="sleep.html">睡眠工具</a><a href="about.html">关于</a><a href="support.html">用户支持</a></div></details>
+      <a class="nav-cta" href="support.html#android">Android 下载 <svg class="glyph" aria-hidden="true"><use href="assets/icons.svg#download"/></svg></a>
+      <details class="nav-menu"><summary aria-label="导航菜单"><svg class="glyph" aria-hidden="true"><use href="assets/icons.svg#menu"/></svg></summary><div><a href="rain.html">雨声实验室</a><a href="clock.html" aria-current="page">床头钟</a><a href="sleep.html">睡眠工具</a><a href="about.html">关于</a><a href="support.html">用户支持</a></div></details>
     </nav>
   </header>
   <main class="wrap tool-main" id="main">
@@ -46,10 +46,10 @@
       <fieldset class="clock-faces">
         <legend>钟面</legend>
         <div class="tool-pills">
-          <label><input type="radio" name="face" value="serif" checked><span>月光衬线</span></label>
+          <label><input type="radio" name="face" value="serif" checked><span>柔光数字</span></label>
           <label><input type="radio" name="face" value="flip"><span>翻页数字</span></label>
-          <label><input type="radio" name="face" value="outline"><span>空心霓虹</span></label>
-          <label><input type="radio" name="face" value="mono"><span>极简等宽</span></label>
+          <label><input type="radio" name="face" value="outline"><span>空心数字</span></label>
+          <label><input type="radio" name="face" value="mono"><span>极简数字</span></label>
         </div>
       </fieldset>
       <div class="clock-options">
@@ -58,9 +58,9 @@
         <label class="clock-brightness" for="clock-brightness">亮度 <input type="range" id="clock-brightness" min="50" max="100" value="88"></label>
       </div>
     </div>
-    <p class="clock-back"><a class="text-link" id="clock-to-rain" href="rain.html">去雨声实验室调一场雨 ↗</a></p>
+    <p class="clock-back"><a class="text-link" id="clock-to-rain" href="rain.html">去雨声实验室调一场雨 <svg class="glyph" aria-hidden="true"><use href="assets/icons.svg#external"/></svg></a></p>
     <noscript><p>床头钟需要启用 JavaScript。</p></noscript>
   </main>
-  <footer class="footer"><div class="wrap"><a class="brand" href="index.html" aria-label="NOCTIS 首页"><img src="assets/mark.svg" alt="" width="30" height="30"><span>NOCTIS</span></a><nav aria-label="页脚导航"><a href="about.html">关于 NOCTIS</a><a href="support.html">用户支持</a><a href="privacy.html">隐私政策</a><a href="terms.html">免费与 Plus</a><a href="credits.html">素材许可</a><a id="survey-footer" href="https://v.wjx.cn/vm/Q10hQEz.aspx" target="_blank" rel="noopener noreferrer">体验问卷 ↗</a></nav></div></footer>
+  <footer class="footer"><div class="wrap"><a class="brand" href="index.html" aria-label="NOCTIS 首页"><img src="assets/mark.svg" alt="" width="30" height="30"><span>NOCTIS</span></a><nav aria-label="页脚导航"><a href="about.html">关于 NOCTIS</a><a href="support.html">用户支持</a><a href="privacy.html">隐私政策</a><a href="terms.html">免费与 Plus</a><a href="credits.html">素材许可</a><a id="survey-footer" href="https://v.wjx.cn/vm/Q10hQEz.aspx" target="_blank" rel="noopener noreferrer">体验问卷 <svg class="glyph" aria-hidden="true"><use href="assets/icons.svg#external"/></svg></a></nav></div></footer>
 </body>
 </html>

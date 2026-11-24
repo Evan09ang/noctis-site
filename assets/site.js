@@ -144,7 +144,7 @@ if (preview && buttons.length) {
       captionAnimation = caption.animate([
         { opacity: .35, transform: 'translateY(7px)' },
         { opacity: 1, transform: 'none' },
-      ], { duration: 460, easing: 'cubic-bezier(.22, .75, .22, 1)' });
+      ], { duration: 240, easing: 'cubic-bezier(.2, .65, .3, 1)' });
     }
     status.textContent = '';
     updateButton();
